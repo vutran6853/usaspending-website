@@ -101,18 +101,12 @@ export default class RankVisualization extends React.Component {
                     selectItem={this.selectItem}
                     deselectItem={this.deselectItem} />
             );
+            console.debug("props: ", this.props);
             chart2 = (
                 <ResponsiveBar
-                    data={data}
-                    keys={[
-                        'hot dog',
-                        'burger',
-                        'sandwich',
-                        'kebab',
-                        'fries',
-                        'donut'
-                    ]}
-                    indexBy="country"
+                    data={this.props.dataSeries}
+                    keys={this.props.labelSeries}
+                    indexBy="awardingAgency"
                     margin={{
                         top: 50, right: 130, bottom: 50, left: 60
                     }}
@@ -141,29 +135,6 @@ export default class RankVisualization extends React.Component {
                             spacing: 10
                         }
                     ]}
-                    fill={[
-                        {
-                            match: {
-                                id: 'fries'
-                            },
-                            id: 'dots'
-                        },
-                        {
-                            match: {
-                                id: 'sandwich'
-                            },
-                            id: 'lines'
-                        }
-                    ]}
-                    borderColor={{
-                        from: 'color',
-                        modifiers: [
-                            [
-                                'darker',
-                                1.6
-                            ]
-                        ]
-                    }}
                     axisTop={null}
                     axisRight={null}
                     axisBottom={{
