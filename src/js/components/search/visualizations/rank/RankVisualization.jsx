@@ -114,7 +114,6 @@ export default class RankVisualization extends React.Component {
                 }
             }
 
-            console.debug(dataStuff);
             chart2 = (
                 <ResponsiveBar
                     data={dataStuff}
@@ -149,33 +148,8 @@ export default class RankVisualization extends React.Component {
                     ]}
                     axisTop={null}
                     axisRight={null}
-                    axisBottom={{
-                        tickSize: 5,
-                        tickPadding: 5,
-                        tickRotation: 0,
-                        legend: 'country',
-                        legendPosition: 'middle',
-                        legendOffset: 32
-                    }}
-                    axisLeft={{
-                        tickSize: 5,
-                        tickPadding: 5,
-                        tickRotation: 0,
-                        legend: 'food',
-                        legendPosition: 'middle',
-                        legendOffset: -40
-                    }}
-                    labelSkipWidth={12}
-                    labelSkipHeight={12}
-                    labelTextColor={{
-                        from: 'color',
-                        modifiers: [
-                            [
-                                'darker',
-                                1.6
-                            ]
-                        ]
-                    }}
+                    axisBottom={null}
+                    axisLeft={null}
                     legends={null}
                     role="application"
                     ariaLabel="Nivo bar chart demo" />
@@ -196,9 +170,7 @@ export default class RankVisualization extends React.Component {
                 {...this.state.selectedItem}
                 {...this.props.meta} />);
         }
-
-        return (
-            <>
+/*
                 <section
                     className="results-visualization-rank-container"
                     aria-label="Spending by Category">
@@ -206,11 +178,15 @@ export default class RankVisualization extends React.Component {
                     {legend}
                     {tooltip}
                 </section>
-                <section
+*/
+        return (
+            <>
+                <div
+                    style={{ height: "200px" }}
                     className="results-visualization-agencies-nivo"
                     aria-label="Spending by Category NIVO">
                     {chart2}
-                </section>
+                </div>
             </>
         );
     }
