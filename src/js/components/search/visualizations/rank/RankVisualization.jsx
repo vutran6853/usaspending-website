@@ -101,12 +101,24 @@ export default class RankVisualization extends React.Component {
                     selectItem={this.selectItem}
                     deselectItem={this.deselectItem} />
             );
-            console.debug("props: ", this.props);
+            // would be better to have an array of objects here
+            const dataStuff = [];
+            if (this.props.dataSeries.length === this.props.labelSeries.length) {
+                for (let i = 0; i < this.props.dataSeries.length; i++) {
+                    dataStuff.push({
+                        data: this.props.dataSeries[i],
+                        label: this.props.labelSeries[i],
+                        desc: this.props.descriptions[i],
+                        link: this.props.linkSeries[i]
+                    });
+                }
+            }
+
+            console.debug(dataStuff);
             chart2 = (
                 <ResponsiveBar
-                    data={this.props.dataSeries}
-                    keys={this.props.labelSeries}
-                    indexBy="awardingAgency"
+                    data={dataStuff}
+                    indexBy={dataStuff.label}
                     margin={{
                         top: 50, right: 130, bottom: 50, left: 60
                     }}
@@ -164,30 +176,7 @@ export default class RankVisualization extends React.Component {
                             ]
                         ]
                     }}
-                    legends={[
-                        {
-                            dataFrom: 'keys',
-                            anchor: 'bottom-right',
-                            direction: 'column',
-                            justify: false,
-                            translateX: 120,
-                            translateY: 0,
-                            itemsSpacing: 2,
-                            itemWidth: 100,
-                            itemHeight: 20,
-                            itemDirection: 'left-to-right',
-                            itemOpacity: 0.85,
-                            symbolSize: 20,
-                            effects: [
-                                {
-                                    on: 'hover',
-                                    style: {
-                                        itemOpacity: 1
-                                    }
-                                }
-                            ]
-                        }
-                    ]}
+                    legends={null}
                     role="application"
                     ariaLabel="Nivo bar chart demo" />
             );
@@ -219,10 +208,8 @@ export default class RankVisualization extends React.Component {
                 </section>
                 <section
                     className="results-visualization-agencies-nivo"
-                    aria-label="Spending by Category">
+                    aria-label="Spending by Category NIVO">
                     {chart2}
-                    {legend}
-                    {tooltip}
                 </section>
             </>
         );
