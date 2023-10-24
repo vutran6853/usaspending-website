@@ -144,8 +144,7 @@
     "optionator": "0.9.3",
     "word-wrap": "1.2.6",
     "postcss": "8.4.31",
-    "icss-utils": "5.0.0",
-    "@babel/traverse":"7.23.2"
+    "icss-utils": "5.0.0"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.17.0",
@@ -209,6 +208,7 @@
     "react-string-replace": "^0.4.0",
     "react-transition-group": "^4.4.1",
     "react-youtube": "^10.1.0",
+    "recharts": "^2.9.0",
     "redux": "^4.0.1",
     "redux-perf-middleware": "^1.2.2",
     "sass": "^1.53.0",

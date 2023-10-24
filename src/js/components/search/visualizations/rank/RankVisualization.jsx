@@ -170,21 +170,20 @@ export default class RankVisualization extends React.Component {
                 {...this.state.selectedItem}
                 {...this.props.meta} />);
         }
-/*
-                <section
-                    className="results-visualization-rank-container"
-                    aria-label="Spending by Category">
-                    {chart}
-                    {legend}
-                    {tooltip}
-                </section>
-*/
+
         return (
             <>
                 <div
                     style={{ height: "200px" }}
                     className="results-visualization-agencies-nivo"
                     aria-label="Spending by Category NIVO">
+                    <section
+                        className="results-visualization-rank-container"
+                        aria-label="Spending by Category">
+                        {chart}
+                        {legend}
+                        {tooltip}
+                    </section>
                     {chart2}
                 </div>
             </>
