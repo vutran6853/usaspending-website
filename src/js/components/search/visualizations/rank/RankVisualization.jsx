@@ -169,7 +169,6 @@ export default class RankVisualization extends React.Component {
                 const {
                     x, y, stroke, payload, link
                 } = props;
-                console.debug("PAYLOAD: ", link[payload.index].link);
                 return (
                     <g transform={`translate(${x},${y})`} width="40px">
                         <a href={`${link[payload.index].link}`}>
