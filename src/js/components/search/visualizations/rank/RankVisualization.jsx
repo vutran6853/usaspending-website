@@ -164,7 +164,6 @@ export default class RankVisualization extends React.Component {
                     </div>
                 </div>
             );
-            console.debug(dataStuff);
             const CustomTick = (props) => {
                 const {
                     x, y, stroke, payload, link
