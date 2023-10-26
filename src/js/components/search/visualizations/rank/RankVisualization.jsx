@@ -251,6 +251,15 @@ export default class RankVisualization extends React.Component {
     }
 }
 /*
+                <section
+                    className="results-visualization-rank-container"
+                    aria-label="Spending by Category">
+                    {chart}
+                    {legend}
+                    {tooltip}
+                </section>
+*/
+/*
 <section
                         className="results-visualization-rank-container"
                         aria-label="Spending by Category">
