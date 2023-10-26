@@ -233,6 +233,13 @@ export default class RankVisualization extends React.Component {
 
         return (
             <>
+                <section
+                    className="results-visualization-rank-container"
+                    aria-label="Spending by Category">
+                    {chart}
+                    {legend}
+                    {tooltip}
+                </section>
                 <div
                     style={{ height: "900px", width: "800px" }}
                     className="results-visualization-agencies-nivo"
