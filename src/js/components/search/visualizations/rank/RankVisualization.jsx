@@ -196,7 +196,7 @@ export default class RankVisualization extends React.Component {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis type="number" domain={[200000000, 160091459000]} />
                         <YAxis type="category" dataKey="label" tick={<CustomTick link={dataStuff} />} fontSize="12px" link="link" />
-                        <Tooltip />
+                        <Tooltip cursor={{ fill: 'red', strokeWidth: 2 }} />
                         <Bar dataKey="value" fill="#8884d8" activeBar={<Rectangle fill="pink" stroke="blue" />} />
                     </BarChart>
                 </ResponsiveContainer>
