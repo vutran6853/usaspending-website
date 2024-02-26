@@ -1,15 +1,16 @@
 .download-center {
     @import "./archiveInfoBox";
     .archive-info {
-        margin-top: rem(30);
+        margin: rem(30) 0;
         @include media($medium-screen) {
             margin: rem(30) rem(20) rem(30) rem(30);
         }
     }
     .download-center__filters {
-        @include span-columns(16);
+        @include grid-column(16);
+        margin-left: 0 !important;
         @include media($medium-screen) {
-            @include span-columns(9);
+            width: 100%;
         }
         margin-bottom: rem(30);
         .download-center__title {
@@ -22,21 +23,29 @@
             }
         }
         @import "./form/downloadForm";
-        .download-center__reset {
-            @include button-unstyled;
-            display: block;
-            margin: auto;
-            color: $color-primary;
-            text-decoration: underline;
+        .download-center__reset-container {
+            @media(max-width: $medium-screen) {
+                width: 79.5%;
+            }
+            .download-center__reset {
+                @include button-unstyled;
+                display: block;
+                margin: auto;
+                color: $color-primary;
+                text-decoration: underline;
+            }
         }
     }
 
     .download-info {
-        @include span-columns(16);
+        @include grid-column(16);
+        margin-left: rem(10);
+        width: 94%;
         @include media($medium-screen) {
-            @include span-columns(7);
+            @include grid-column(7);
             border-left: solid 1px #e1e1e1;
             padding: rem(15) rem(30) 0 rem(30);
+            width: 94%;
         }
 
         h3.download-info__title {

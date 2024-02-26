@@ -12,7 +12,7 @@ const ExplorerLanding = React.lazy(() => import('components/explorer/landing/Exp
 const ExplorerDetailPageContainer = React.lazy(() => import('containers/explorer/detail/ExplorerDetailPageContainer').then((comp) => comp));
 const AwardContainer = React.lazy(() => import('containers/award/AwardContainer').then((comp) => comp));
 const AccountContainer = React.lazy(() => import('containers/account/AccountContainer').then((comp) => comp));
-const About = React.lazy(() => import('components/about/About').then((comp) => comp));
+const AboutPage = React.lazy(() => import('components/about/AboutPage').then((comp) => comp));
 const AccessibilityPage = React.lazy(() => import('components/about/legal/AccessibilityPage').then((comp) => comp));
 const PrivacyPage = React.lazy(() => import('components/about/legal/PrivacyPage').then((comp) => comp));
 const FOIAPage = React.lazy(() => import('components/about/legal/FOIAPage').then((comp) => comp));
@@ -40,6 +40,7 @@ const InteractiveDataSourcesPage = React.lazy(() => import('components/interacti
 const TrainingVideosContainer = React.lazy(() => import('containers/trainingVideos/TrainingVideosContainer').then((comp) => comp));
 const TempPage = React.lazy(() => import('components/tempPage').then((comp) => comp));
 const TempNav = React.lazy(() => import('components/about/navTest/About').then((comp) => comp));
+const TempSearchPage = React.lazy(() => import('components/tempSearchPage/TempSearchPage').then((comp) => comp));
 
 // /* eslint-disable import/prefer-default-export */
 // Please add any new routes to the scripts/pages.js routes file.
@@ -97,7 +98,7 @@ export const routes = [
     },
     {
         path: '/about',
-        component: About,
+        component: AboutPage,
         exact: true
     },
     {
@@ -226,6 +227,11 @@ export const routes = [
     {
         path: '/temp-nav',
         component: TempNav,
+        exact: true
+    },
+    {
+        path: '/temp-search-page',
+        component: TempSearchPage,
         exact: true
     },
     {

@@ -6,9 +6,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import * as aboutTheDataActions from 'redux/actions/aboutTheDataSidebar/aboutTheDataActions';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { Scrollbars } from 'react-custom-scrollbars';
-import Mousetrap from "mousetrap";
 import { isEqual } from "lodash";
 import { getDrilldownEntrySectionAndId, escapeRegExp } from 'helpers/aboutTheDataSidebarHelper';
 import AboutTheDataHeader from "./AboutTheDataHeader";
@@ -17,6 +17,8 @@ import AboutTheDataDrilldown from "./AboutTheDataDrilldown";
 import DownloadButton from "./DownloadButton";
 import { LoadingWrapper } from "../sharedComponents/Loading";
 import AboutTheDataNoResults from "./AboutTheDataNoResults";
+import { useQueryParams, combineQueryParams, getQueryParamString } from '../../helpers/queryParams';
+
 
 const propTypes = {
     aboutTheDataSidebar: PropTypes.object,
@@ -27,6 +29,8 @@ const propTypes = {
 };
 
 const AboutTheData = (props) => {
+    const history = useHistory();
+    const query = useQueryParams();
     const [height, setHeight] = useState(0);
     const [drilldown, setDrilldown] = useState(null);
     const [drilldownItemId, setDrilldownItemId] = useState(null);
@@ -42,34 +46,13 @@ const AboutTheData = (props) => {
 
     const { input, results } = useSelector((state) => state.aboutTheDataSidebar.search);
     const { lastOpenedSlideout } = useSelector((state) => state.slideouts);
+    const [firstMount, setFirstMount] = useState(true);
 
     useEffect(() => {
-        setZIndexClass(lastOpenedSlideout === 'atd' ? 'z-index-plus-one' : 'z-index');
-    }, [lastOpenedSlideout]);
-
-    useEffect(() => {
-        setSearchTerm(input);
-
-        if (input === null || input?.length === 0 || isEqual(results, searchResults)) {
-            setSearchResultsPending(false);
-            setIsLoading(false);
+        if (props.aboutTheDataSidebar.display) {
+            setFirstMount(false);
         }
-
-        // if there are already results on redux set the UI to the results
-        if (input?.length > 0 && !isEqual(results, searchResults)) {
-            setSearchResultsPending(true);
-            setSearchResults(results);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    useEffect(() => {
-        if (searchResultsPending && isEqual(results, searchResults)) {
-            setSearchResultsPending(false);
-            setIsLoading(false);
-        }
-    }, [results, searchResults, searchResultsPending]);
-
+    }, [props.aboutTheDataSidebar.display]);
     const clearDrilldown = () => {
         setDrilldownItemId(null);
         setDrilldownSection(null);
@@ -113,7 +96,7 @@ const AboutTheData = (props) => {
                                 )
                                     :
                                     <>
-                                        { part }
+                                        {part}
                                     </>
                                 }
                             </>
@@ -147,15 +130,25 @@ const AboutTheData = (props) => {
 
         setHeight(sidebarHeight);
     };
-    const closeAboutTheData = useCallback(() => {
-        // close the atd drawer when the escape key is pressed for accessibility and general
-        props.hideAboutTheData();
-        clearDrilldown();
 
-        // move focus back to the main content
-        const mainContent = document.getElementById('main-focus');
-        if (mainContent) {
-            mainContent.focus();
+    const closeAboutTheData = useCallback((e) => {
+        if (e.key === 'Escape' || (e.type === 'click')) {
+            // close the atd drawer when the escape key is pressed, for accessibility and general non-annoyance
+            props.hideAboutTheData();
+            clearDrilldown();
+
+            // remove search param from url
+            if (window.location.href.includes('about-the-data')) {
+                delete query['about-the-data'];
+                const newQueryParams = combineQueryParams(query, '');
+                window.history.pushState({}, null, `${history.location.pathname}${getQueryParamString(newQueryParams)}`);
+            }
+
+            // move focus back to the main content
+            const mainContent = document.getElementById('main-focus');
+            if (mainContent) {
+                mainContent.focus();
+            }
         }
     });
 
@@ -190,6 +183,29 @@ const AboutTheData = (props) => {
         );
 
     useEffect(() => {
+        setSearchTerm(input);
+
+        if (input === null || input?.length === 0 || isEqual(results, searchResults)) {
+            setSearchResultsPending(false);
+            setIsLoading(false);
+        }
+
+        // if there are already results on redux set the UI to the results
+        if (input?.length > 0 && !isEqual(results, searchResults)) {
+            setSearchResultsPending(true);
+            setSearchResults(results);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        if (searchResultsPending && isEqual(results, searchResults)) {
+            setSearchResultsPending(false);
+            setIsLoading(false);
+        }
+    }, [results, searchResults, searchResultsPending]);
+
+    useEffect(() => {
         if (props.aboutTheDataSidebar.term.slug && props.aboutTheDataSidebar.term.slug !== '') {
             const entry = getDrilldownEntrySectionAndId(schema, props.aboutTheDataSidebar.term.slug);
             setDrilldownItemId(entry.entryId);
@@ -197,12 +213,11 @@ const AboutTheData = (props) => {
             setIsLoading(false);
         }
 
-        Mousetrap.bind('esc', closeAboutTheData);
-
         window.addEventListener('resize', measureAvailableHeight);
+        window.addEventListener('keyup', closeAboutTheData);
         return () => {
             window.removeEventListener('resize', measureAvailableHeight);
-            Mousetrap.unbind('esc');
+            window.removeEventListener('keyup', closeAboutTheData);
         };
     }, [closeAboutTheData, props.aboutTheDataSidebar.term.slug, schema]);
 
@@ -220,8 +235,15 @@ const AboutTheData = (props) => {
         }
     }, [drilldownItemId, drilldownSection, scrollbar]);
 
+    useEffect(() => {
+        setZIndexClass(lastOpenedSlideout === 'atd' ? 'z-index-plus-one' : 'z-index');
+    }, [lastOpenedSlideout]);
+
     return (
-        <div id="usa-atd-wrapper" className={`usa-atd-wrapper ${zIndexClass}`}>
+        <div
+            id="usa-atd-wrapper"
+            style={{ visibility: firstMount ? "hidden" : "" }}
+            className={props.aboutTheDataSidebar.display ? `opened usa-atd-wrapper ${zIndexClass}` : `usa-atd-wrapper ${zIndexClass}`}>
             <aside
                 role="dialog"
                 aria-labelledby="atd-title"

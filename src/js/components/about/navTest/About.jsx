@@ -8,7 +8,6 @@ import PageWrapper from 'components/sharedComponents/PageWrapper';
 import { aboutPageMetaTags } from 'helpers/metaTagHelper';
 import { stickyHeaderHeight } from 'dataMapping/stickyHeader/stickyHeader';
 import { getStickyBreakPointForSidebar } from 'helpers/stickyHeaderHelper';
-import { scrollToY } from 'helpers/scrollToHelper';
 import { useQueryParams } from 'helpers/queryParams';
 import { find, throttle } from "lodash";
 import { useHistory } from "react-router-dom";
@@ -101,7 +100,7 @@ const About = () => {
     const jumpToSection = (section = '') => {
         // we've been provided a section to jump to
         // check if it's a valid section
-        const sectionObj = find(aboutSections, ['label', section]);
+        const sectionObj = find(aboutSections, ['section', section]);
         if (!sectionObj) return;
 
         // find the section in dom
@@ -114,7 +113,11 @@ const About = () => {
         // add offsets
         const conditionalOffset = window.scrollY < getStickyBreakPointForSidebar() ? stickyHeaderHeight : 10;
         const sectionTop = (sectionDom.offsetTop - stickyHeaderHeight - conditionalOffset);
-        scrollToY(sectionTop + 15, 700);
+        window.scrollTo({
+            top: sectionTop - 5,
+            left: 0,
+            behavior: 'smooth'
+        });
     };
 
     useEffect(throttle(() => {
@@ -137,13 +140,14 @@ const About = () => {
     return (
         <PageFeatureFlag>
             <PageWrapper
-                pageName="About"
+                pageName="about"
                 classNames="usa-da-about-page"
                 metaTagProps={aboutPageMetaTags}
                 title="About"
                 sections={aboutSections}
                 activeSection={activeSection}
-                jumpToSection={jumpToSection}>
+                jumpToSection={jumpToSection}
+                inPageNav >
                 <main id="main-content" className="main-content">
                     <p>Test Page - For lower environments only</p>
                     <AboutContent />

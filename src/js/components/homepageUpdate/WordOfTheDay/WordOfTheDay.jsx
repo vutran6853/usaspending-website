@@ -108,24 +108,32 @@ const WordOfTheDay = () => {
         11: { startingIndex: 31 }
     };
 
-    useEffect(() => {
-        if (currentDate > -1 && currentMonth > -1) {
-            let index = dateDataMapper[currentMonth]?.startingIndex + currentDate;
-            if (index >= glossaryTerms.length) {
-                index = currentDate;
-            }
-            setTerm(glossaryTerms[index]);
-        }
-    }, [currentDate, currentMonth, dateDataMapper, glossaryTerms]);
-
     const selectWordOfTheDay = () => {
         const d = new Date();
         setCurrentDate(d.getUTCDate());
         setCurrentMonth(d.getUTCMonth());
     };
 
+    useEffect(() => {
+        fetchAllTerms().promise
+            .then((res) => {
+                selectWordOfTheDay();
+                setGlossary(res.data.results);
+                setLoading(false);
+                setError(false);
+            })
+            .catch((err) => {
+                if (!isCancel(err)) {
+                    console.log(err);
+                    setLoading(false);
+                    setError(true);
+                }
+            });
+    }, []);
+
     const readMoreAction = () => {
         Analytics.event({
+            event: 'homepage-word-of-the-day',
             category: 'Homepage',
             action: 'Link',
             label: 'word of the day'
@@ -136,17 +144,27 @@ const WordOfTheDay = () => {
     };
 
     useEffect(() => {
+        if (currentDate > -1 && currentMonth > -1) {
+            let index = dateDataMapper[currentMonth]?.startingIndex + currentDate;
+            if (index >= glossaryTerms.length) {
+                index = currentDate;
+            }
+            setTerm(glossaryTerms[index]);
+        }
+    }, [currentDate, currentMonth, dateDataMapper, glossaryTerms]);
+
+    useEffect(() => {
         let found = false;
         if (glossary && term) {
             for (let i = 0; i < glossary.length; i++) {
                 if (glossary[i]?.term?.trim().toLowerCase() === term?.trim().toLowerCase()) {
                     setGlossarySlug(glossary[i].slug);
                     found = true;
+                    setError(false);
                     setDefinition(glossary[i].plain);
                 }
             }
         }
-
         if (!found) {
             setError(true);
         }
@@ -174,25 +192,7 @@ const WordOfTheDay = () => {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [glossary, pathname, search, term]);
-
-    useEffect(() => {
-        fetchAllTerms().promise
-            .then((res) => {
-                selectWordOfTheDay();
-                setGlossary(res.data.results);
-                setLoading(false);
-                setError(false);
-            })
-            .catch((err) => {
-                if (!isCancel(err)) {
-                    console.log(err);
-                    setLoading(false);
-                    setError(true);
-                }
-            });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [glossary, pathname, search, term, currentDate, currentMonth]);
 
     return (
         <section className="word-of-the-day__section">

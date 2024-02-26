@@ -31,13 +31,7 @@ const StatusOfFundsChart = ({
     const [sortedNums, setSortedNums] = useState(null);
     const [hoverData, setHoverData] = useState(null);
 
-    let viewHeight;
-    if (!toggle) {
-        viewHeight = 760;
-    }
-    else {
-        viewHeight = 1200;
-    }
+    const viewHeight = 760;
     const viewWidth = 1000;
     const margins = {
         top: 40, right: 0, bottom: 10, left: isLargeScreen ? 180 : 245
@@ -150,22 +144,13 @@ const StatusOfFundsChart = ({
             return viewHeight * 1.5;
         }
         else if (isMobile) {
-            if (toggle) {
-                return viewHeight * 2.54;
-            }
             return (viewHeight + 10) * 2.4;
         }
         else if (isMediumScreen) {
-            if (!toggle) {
-                return 800 + margins.top + margins.bottom;
-            }
-            return 1600 + margins.top + margins.bottom;
+            return 800 + margins.top + margins.bottom;
         }
         else if (isLargeScreen) {
-            if (!toggle) {
-                return 1300 + margins.top + margins.bottom;
-            }
-            return 1500 + margins.top + margins.bottom;
+            return 1300 + margins.top + margins.bottom;
         }
 
         return viewHeight * 1.06;
@@ -340,15 +325,14 @@ const StatusOfFundsChart = ({
             const maxPosObl = positiveObligationsArray.length ? positiveObligationsArray.reduce((a, b) => Math.max(a, b)) : null;
             const maxNegObl = negativeObligationsArray.length ? negativeObligationsArray.reduce((a, b) => Math.max(Math.abs(a), Math.abs(b))) : null;
 
-            const arrayOfMaxValues = [];
-            arrayOfMaxValues.push(Math.abs(maxNegTbr) > Math.abs(maxPosTbr) ? maxNegTbr : maxPosTbr);
-            arrayOfMaxValues.push(Math.abs(maxNegObl) > Math.abs(maxPosObl) ? maxNegObl : maxPosObl);
+            const largestPosValue = Math.max(maxPosTbr, maxPosObl);
+            const largestNegValue = Math.max(Math.abs(maxNegTbr), Math.abs(maxNegObl)) * -1;
 
             if (negativeTbr || negativeObl) {
-                x.domain(d3.extent(arrayOfMaxValues)).nice(2);
+                x.domain([largestNegValue, largestPosValue]).nice(2);
             }
             else {
-                x.domain([0, Math.max(maxPosTbr, maxPosObl)]).nice(2);
+                x.domain([0, largestPosValue]).nice(2);
             }
 
             // extract sorted agency names
@@ -372,7 +356,6 @@ const StatusOfFundsChart = ({
                 .selectAll('.tick text')
                 .attr('id', 'tick-labels-axis')
                 .attr('tabindex', 0)
-                .attr('aria-describedby', (d) => `x axis label-${d}`)
                 .attr('dy', '-0.16em')
                 .attr('dx', '0em')
                 .style("font-size", isMobile ? 36 : fontSizeScreenWidth())
@@ -416,7 +399,6 @@ const StatusOfFundsChart = ({
                 .selectAll('.tick text')
                 .attr('class', 'y-axis-labels')
                 .attr('tabindex', 0)
-                .attr('aria-describedby', (d) => `y axis label-${d}`)
                 .style('fill', '#555')
                 .style("font-family", 'Source Sans Pro')
                 .style('font-size', '1.45rem')
@@ -454,7 +436,8 @@ const StatusOfFundsChart = ({
                 .enter()
                 .append('g')
                 .attr('class', 'bar-group')
-                .attr('tabindex', 0);
+                .attr('tabindex', 0)
+                .attr('transform', window.innerWidth > largeScreen ? "translate(0, -10)" : "translate(0, 0)");
             barGroups.append("rect")
                 .attr('transform', tickMobileXAxis)
                 .attr("x", -8)
@@ -653,18 +636,29 @@ const StatusOfFundsChart = ({
                     setIsHovered(false);
                     setHoverData(null);
                 });
-            const tickMobileXAxis = isLargeScreen ? 'translate(-130,0)' : 'translate(90, 0)';
-            const tickMobileYAxis = () => {
+            const tickMobileXAxis = isLargeScreen ? 'translate(-130, 0)' : 'translate(90, 0)';
+            const transformBarGroup = () => {
                 if (window.innerWidth >= 992 && window.innerWidth < 1200) {
-                    return 'translate(-150,-85)';
+                    return "translate(-130,10)";
                 }
-                else if (isMediumScreen && !isMobile) {
-                    return 'translate(-150,-90)';
+                else if (isLargeScreen) {
+                    return "translate(-130, 0)";
                 }
-                else if (!isLargeScreen) {
+                return "translate(90, 0)";
+            };
+
+            // this fn is called when placing the labels
+            const tickMobileYAxis = () => {
+                if (window.innerWidth >= 600 && window.innerWidth < 1200) {
+                    return 'translate(-150,-60)';
+                }
+                else if (isMobile) { // < 600px
+                    return 'translate(-150,-40)';
+                }
+                else if (!isLargeScreen) { // > 1200px; which seems counterintuitive, but is true
                     return 'translate(60,0)';
                 }
-                return 'translate(-150,-135)';
+                return 'translate(-150,-135)'; // ??? what sizes?
             };
 
             // scale to x data points;
@@ -698,15 +692,14 @@ const StatusOfFundsChart = ({
             const maxPosOutlay = positiveOutlaysArray.length ? positiveOutlaysArray.reduce((a, b) => Math.max(a, b)) : null;
             const maxNegOutlay = negativeOutlaysArray.length ? negativeOutlaysArray.reduce((a, b) => Math.max(Math.abs(a), Math.abs(b))) : null;
 
-            const arrayOfMaxValues = [];
-            arrayOfMaxValues.push(Math.abs(maxNegTbr) > Math.abs(maxPosTbr) ? maxNegTbr : maxPosTbr);
-            arrayOfMaxValues.push(Math.abs(maxNegOutlay) > Math.abs(maxPosOutlay) ? maxNegOutlay : maxPosOutlay);
+            const largestPosValue = Math.max(maxPosTbr, maxPosOutlay);
+            const largestNegValue = Math.max(Math.abs(maxNegTbr), Math.abs(maxNegOutlay)) * -1;
 
             if (negativeTbr || negativeOutlay) {
-                x.domain(d3.extent(arrayOfMaxValues)).nice(2);
+                x.domain([largestNegValue, largestPosValue]).nice(2);
             }
             else {
-                x.domain([0, Math.max(maxPosTbr, maxPosOutlay)]).nice(2);
+                x.domain([0, largestPosValue]).nice(2);
             }
 
             // extract sorted agency names
@@ -730,7 +723,6 @@ const StatusOfFundsChart = ({
                 .selectAll('.tick text')
                 .attr('id', 'tick-labels-axis')
                 .attr('tabindex', 0)
-                .attr('aria-describedby', (d) => `x axis label-${d}`)
                 .attr('dy', '-0.16em')
                 .attr('dx', '0em')
                 .style("font-size", isMobile ? 36 : fontSizeScreenWidth())
@@ -774,7 +766,6 @@ const StatusOfFundsChart = ({
                 .selectAll('.tick text')
                 .attr('class', 'y-axis-labels')
                 .attr('tabindex', 0)
-                .attr('aria-describedby', (d) => `y axis label-${d}`)
                 .style('fill', '#555')
                 .style("font-family", 'Source Sans Pro')
                 .style('font-size', '1.45rem')
@@ -815,16 +806,16 @@ const StatusOfFundsChart = ({
                 .attr('tabindex', 0)
                 .attr('transform', !isMobile ? "translate(0,-10)" : "translate(0,0)");
             barGroups.append("rect")
-                .attr('transform', tickMobileXAxis)
+                .attr('transform', transformBarGroup)
                 .attr("x", -8)
                 .attr("y", (d) => {
-                    if (!isMobile) {
+                    if (isLargeScreen) {
                         if (isMediumScreen) {
-                            return y(d.name) + 40;
+                            return y(d.name) + 10;
                         }
-                        return y(d.name) + 100;
+                        return y(d.name);
                     }
-                    return y(d.name) - 10;
+                    return y(d.name) + 40;
                 })
                 .attr("width", isLargeScreen ? chartWidth + 340 : chartWidth + 90)
                 .attr("height", () => {
@@ -840,51 +831,6 @@ const StatusOfFundsChart = ({
                 .attr("stroke", "#f1f1f1")
                 .attr('class', 'hbars')
                 .attr('id', 'hlines');
-            // append total budgetary resources bars
-            barGroups.append("rect")
-                .attr('transform', tickMobileXAxis)
-                .attr("x", (d) => {
-                    if (d._budgetaryResources < 0) {
-                        return x(d._budgetaryResources) - 8;
-                    }
-                    if (!negativeTbr && !negativeOutlay) {
-                        return x(0) - 8;
-                    }
-                    return x(0);
-                })
-                .attr("y", (d) => {
-                    if (!isMobile) {
-                        if (isMediumScreen || (window.innerWidth >= 992 && window.innerWidth < 1200)) {
-                            return y(d.name);
-                        }
-                        return y(d.name) + 50;
-                    }
-                    return y(d.name) - 90;
-                })
-                .attr("width", (d) => {
-                    if (negativeTbr || negativeOutlay) {
-                        return drawNegativeBudgetaryResources(d, x);
-                    }
-                    if (d._budgetaryResources === 0) {
-                        return 0;
-                    }
-                    return x(d._budgetaryResources) + 11;
-                })
-                .attr("height", () => {
-                    if (!isMobile) {
-                        if (isMediumScreen) {
-                            return "31.12";
-                        }
-                        return "42.37";
-                    }
-                    return "63.63";
-                })
-                .attr('class', 'hbars')
-                .attr('id', 'tbr-bar')
-                .attr("style", "outline: thin solid #D7D8D9;")
-                .attr('aria-disabled', "true")
-                .attr("stroke-width", 2)
-                .attr('fill', 'url(#diagonalHatch)');
 
             // append total outlay bars
             barGroups.append("rect")
@@ -899,16 +845,13 @@ const StatusOfFundsChart = ({
                     return x(0);
                 })
                 .attr("y", (d) => {
-                    if (!isMobile) {
-                        if (window.innerWidth >= 992 && window.innerWidth < 1200) {
-                            return y(d.name) + 50;
+                    if (isLargeScreen) {
+                        if (isMediumScreen) {
+                            return y(d.name) + 10;
                         }
-                        else if (isMediumScreen) {
-                            return y(d.name) + 40;
-                        }
-                        return y(d.name) + 100;
+                        return y(d.name) + 10;
                     }
-                    return y(d.name) - 10;
+                    return y(d.name) + 40;
                 })
                 .attr("width", (d) => {
                     if (negativeTbr || negativeOutlay) {

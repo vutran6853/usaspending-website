@@ -21,6 +21,7 @@
     }
 
     #main-content {
+        background-color: $color-gray-lightest;
         padding-bottom: rem(32);
         @import "components/aboutTheDataSidebar/aboutTheData";
     }
@@ -29,14 +30,6 @@
         width: 100%;
         @import "./results/searchResults";
         @import "./topFilterBar/topFilterBar";
-
-        .last-update {
-            font-size: rem(12);
-            margin-bottom: rem(5);
-            strong {
-                font-weight: $font-bold;
-            }
-        }
 
         .tablet-search__modal {
             display:none;

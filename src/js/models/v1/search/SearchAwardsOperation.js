@@ -64,7 +64,7 @@ class SearchAwardsOperation {
             this.timePeriodFY = [];
         }
 
-        this.dateType = state.newAwardsOnly;
+        this.dateType = state.filterNewAwardsOnlySelected;
 
         this.awardType = state.awardType.toArray();
 
@@ -167,9 +167,13 @@ class SearchAwardsOperation {
             }];
         }
 
-        // Add dateType to timePeriod object
+        // If new awards only has been selected
+        // Add dateType = new_awards_only to all selected fy
         if (this.dateType) {
-            filters[rootKeys.timePeriod][0][timePeriodKeys.dateType] = 'new_awards_only';
+            filters[rootKeys.timePeriod].forEach((item) => {
+                // eslint-disable-next-line no-param-reassign
+                item[timePeriodKeys.dateType] = 'new_awards_only';
+            });
         }
 
         // Add award types

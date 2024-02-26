@@ -66,7 +66,7 @@ const navbarConfig = [
     }
 ];
 
-const MobileNav = (props) => {
+const MobileNav = React.memo((props) => {
     const { mobileNavInitialState, setMobileNavInitialState } = props;
     const [url, setUrl] = useState('');
     const [detailMobileNavIsHidden, setDetailMobileNavIsHidden] = useState(true);
@@ -75,6 +75,7 @@ const MobileNav = (props) => {
 
     const clickedHeaderLink = (route) => {
         Analytics.event({
+            event: 'Header Link - Mobile',
             category: 'Header - Link',
             action: route
         });
@@ -110,7 +111,7 @@ const MobileNav = (props) => {
     }, [location.pathname]);
 
     return (
-        <div className="mobile-nav">
+        <div className={props.showMobileNav ? 'mobile-nav opened' : 'mobile-nav'}>
             <div className="mobile-nav__top">
                 <MobileTop
                     closeDetailedMobileNav={closeDetailedMobileNav}
@@ -186,7 +187,7 @@ const MobileNav = (props) => {
             </div>
         </div>
     );
-};
+});
 
 MobileNav.propTypes = propTypes;
 export default MobileNav;
