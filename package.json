@@ -161,8 +161,6 @@
     "@jest/globals": "^29.7.0",
     "@mdx-js/loader": "^2.1.5",
     "@mdx-js/react": "^2.1.5",
-    "@nivo/bar": "^0.83.0",
-    "@nivo/core": "^0.83.0",
     "accounting": "^0.4.1",
     "ajv": "^8.11.0",
     "axios": "^1.6.2",
