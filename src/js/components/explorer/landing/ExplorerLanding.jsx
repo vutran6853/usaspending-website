@@ -35,20 +35,12 @@ export default class ExplorerLanding extends React.Component {
         super(props);
 
         this.state = {
-            expanded: false,
-            showAboutTheDataIcon: false
+            expanded: false
         };
 
         this.toggleDetail = this.toggleDetail.bind(this);
-        this.setShowAboutTheDataIcon = this.setShowAboutTheDataIcon.bind(this);
     }
 
-    setShowAboutTheDataIcon() {
-        this.setState({
-            showAboutTheDataIcon: !this.state.showAboutTheDataIcon,
-            expanded: this.state.expanded
-        });
-    }
     toggleDetail() {
         this.setState({
             expanded: !this.state.expanded,
@@ -60,7 +52,7 @@ export default class ExplorerLanding extends React.Component {
         const expandLabel = this.state.expanded ? 'Hide' : 'Learn More';
 
         return (
-            <ExplorerWrapperPage showShareIcon showAboutTheDataIcon>
+            <ExplorerWrapperPage showShareIcon>
                 <div className="explorer-landing">
                     <div className="explorer-landing__intro">
                         <h2
@@ -110,22 +102,19 @@ export default class ExplorerLanding extends React.Component {
                             title="Budget Function"
                             description="See spending divided by a high level categorization based on purpose."
                             url="explorer/budget_function"
-                            term="budget-function"
-                            onClick={this.setShowAboutTheDataIcon} />
+                            term="budget-function" />
                         <ExplorerLandingOption
                             icon="agency"
                             title="Agency"
                             description="See spending divided by all U.S. government agencies."
                             url="explorer/agency"
-                            term="agency"
-                            onClick={this.setShowAboutTheDataIcon} />
+                            term="agency" />
                         <ExplorerLandingOption
                             icon="object_class"
                             title="Object Class"
                             description="See spending grouped by the types of items and services purchased by the federal government."
                             url="explorer/object_class"
-                            term="object-class"
-                            onClick={this.setShowAboutTheDataIcon} />
+                            term="object-class" />
                     </div>
                 </div>
             </ExplorerWrapperPage>

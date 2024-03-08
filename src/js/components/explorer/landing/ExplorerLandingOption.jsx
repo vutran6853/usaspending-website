@@ -38,29 +38,28 @@ const ExplorerLandingOption = (props) => {
                 {props.description}
             </div>
 
-            {/* <Link */}
-            {/*     className="landing-option__button" */}
-            {/*     to={props.url} */}
-            {/*     onClick={props.onClick}> */}
-            {/*     Start */}
-            {/* </Link> */}
-            <div className="landing-option__button">
-                {/* the div is 100% width of the parent but the Button still isn't  */}
-                <Button
-                    buttonSize="md"
-                    backgroundColor="light"
-                    buttonType="primary"
-                    copy="Start"
-                    textAlignment="center"
-                    onClick={props.onClick}
-                    onKeyUp={props.onClick}
-                    to={props.url}
-                    buttonTitle="start" />
-            </div>
+            <Link
+                className="landing-option__button"
+                to={props.url}
+                onClick={props.onClick}>
+                Start
+            </Link>
+            {/* <div className="landing-option__button"> */}
+            {/*     /!* the div is 100% width of the parent but the Button still isn't  *!/ */}
+            {/*     <Button */}
+            {/*         buttonSize="md" */}
+            {/*         backgroundColor="light" */}
+            {/*         buttonType="primary" */}
+            {/*         copy="Start" */}
+            {/*         textAlignment="center" */}
+            {/*         onClick={props.onClick} */}
+            {/*         onKeyUp={props.onClick} */}
+            {/*         to={props.url} */}
+            {/*         buttonTitle="start" /> */}
+            {/* </div> */}
         </div>
     );
 };
 
 ExplorerLandingOption.propTypes = propTypes;
-
 export default ExplorerLandingOption;
