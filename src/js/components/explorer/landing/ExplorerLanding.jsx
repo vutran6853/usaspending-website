@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { Button } from "data-transparency-ui";
 import { Link } from 'react-router-dom';
 
 import { Glossary } from 'components/sharedComponents/icons/Icons';
@@ -84,11 +85,22 @@ export default class ExplorerLanding extends React.Component {
                                         )}
                                     </TransitionGroup>
                                 </div>
-                                <button
-                                    className="explorer-description__expand"
-                                    onClick={this.toggleDetail}>
-                                    {expandLabel}
-                                </button>
+                                {/* <button */}
+                                {/*     className="explorer-description__expand" */}
+                                {/*     onClick={this.toggleDetail}> */}
+                                {/*     {expandLabel} */}
+                                {/* </button> */}
+                                <div className="explorer-description__button-container">
+                                    <Button
+                                        buttonSize="lg"
+                                        backgroundColor="light"
+                                        buttonType="text"
+                                        copy={expandLabel}
+                                        textAlignment="center"
+                                        onClick={this.toggleDetail}
+                                        onKeyUp={this.toggleDetail}
+                                        buttonTitle={expandLabel} />
+                                </div>
                             </div>
                         </div>
                     </div>

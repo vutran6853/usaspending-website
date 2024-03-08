@@ -2,6 +2,9 @@
 
     .explorer-landing__intro {
         padding: rem(64) 0 rem(32);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         text-align: center;
 
         @include media($large-screen) {
@@ -16,7 +19,8 @@
             width: rem(1280);
         }
 
-        h2.explorer-landing__title {
+        .explorer-landing__title {
+            align-self: center;
             margin: 0;
             padding-bottom: rem(24);
             font-size: $font-size-40;
@@ -26,6 +30,7 @@
         }
 
         .explorer-landing__detail {
+            align-self: center;
             padding: rem(16);
 
             .explorer-landing__detail-content {
@@ -39,6 +44,8 @@
     }
 
     .explorer-description {
+        display: flex;
+        flex-direction: column;
         max-width: rem(945);
 
         h3.explorer-description__title {
@@ -49,12 +56,8 @@
             line-height: $base-line-height;
         }
 
-        button.explorer-description__expand {
-            @include button-unstyled;
-            color: $color-primary;
-            font-weight: $font-semibold;
-            font-size: $font-size-20;
-            line-height: $base-line-height;
+        .explorer-description__button-container {
+            align-self: center;
             margin-top: rem(25);
         }
 

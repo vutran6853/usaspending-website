@@ -5,6 +5,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button } from "data-transparency-ui";
 import { Link } from 'react-router-dom';
 
 import { icons } from 'dataMapping/explorer/dropdownScopes';
@@ -37,12 +38,25 @@ const ExplorerLandingOption = (props) => {
                 {props.description}
             </div>
 
-            <Link
-                className="landing-option__button"
-                to={props.url}
-                onClick={props.onClick}>
-                Start
-            </Link>
+            {/* <Link */}
+            {/*     className="landing-option__button" */}
+            {/*     to={props.url} */}
+            {/*     onClick={props.onClick}> */}
+            {/*     Start */}
+            {/* </Link> */}
+            <div className="landing-option__button">
+                {/* the div is 100% width of the parent but the Button still isn't  */}
+                <Button
+                    buttonSize="md"
+                    backgroundColor="light"
+                    buttonType="primary"
+                    copy="Start"
+                    textAlignment="center"
+                    onClick={props.onClick}
+                    onKeyUp={props.onClick}
+                    to={props.url}
+                    buttonTitle="start" />
+            </div>
         </div>
     );
 };
