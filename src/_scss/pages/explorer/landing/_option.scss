@@ -72,18 +72,21 @@
     }
 
     .landing-option__button {
-        @extend .usa-button;
-        background-color: #0170BC;
-        width: 100%;
-        font-size: $font-size-16;
-        line-height: $base-line-height;
-
-        &:hover {
-            background-color: #215493 !important;
-        }
-
-        &:visited {
-            background-color: #0170BC;
+        //@extend .usa-button;
+        //background-color: #0170BC;
+        //width: 100%;
+        //font-size: $font-size-16;
+        //line-height: $base-line-height;
+        //
+        //&:hover {
+        //    background-color: #215493 !important;
+        //}
+        //
+        //&:visited {
+        //    background-color: #0170BC;
+        //}
+        a {
+            width: 100%;
         }
     }
 }

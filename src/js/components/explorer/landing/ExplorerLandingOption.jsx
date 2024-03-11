@@ -16,8 +16,8 @@ const propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
     url: PropTypes.string,
-    term: PropTypes.string,
-    onClick: PropTypes.func
+    term: PropTypes.string
+    // onClick: PropTypes.func
 };
 
 const ExplorerLandingOption = (props) => {
@@ -38,25 +38,26 @@ const ExplorerLandingOption = (props) => {
                 {props.description}
             </div>
 
-            <Link
-                className="landing-option__button"
-                to={props.url}
-                onClick={props.onClick}>
-                Start
-            </Link>
-            {/* <div className="landing-option__button"> */}
-            {/*     /!* the div is 100% width of the parent but the Button still isn't  *!/ */}
-            {/*     <Button */}
-            {/*         buttonSize="md" */}
-            {/*         backgroundColor="light" */}
-            {/*         buttonType="primary" */}
-            {/*         copy="Start" */}
-            {/*         textAlignment="center" */}
-            {/*         onClick={props.onClick} */}
-            {/*         onKeyUp={props.onClick} */}
-            {/*         to={props.url} */}
-            {/*         buttonTitle="start" /> */}
-            {/* </div> */}
+            {/* <Link */}
+            {/*     className="landing-option__button" */}
+            {/*     to={props.url} */}
+            {/*     onClick={props.onClick}> */}
+            {/*     Start */}
+            {/* </Link> */}
+            <div className="landing-option__button">
+                {/* the div is 100% width of the parent but the Button still isn't  */}
+                <Button
+                    additionalClassnames="button-type__intext-light"
+                    buttonSize="md"
+                    backgroundColor="light"
+                    buttonType="primary"
+                    copy="Start"
+                    textAlignment="center"
+                    // onClick={props.onClick}
+                    // onKeyUp={props.onClick}
+                    to={props.url}
+                    buttonTitle="start" />
+            </div>
         </div>
     );
 };
