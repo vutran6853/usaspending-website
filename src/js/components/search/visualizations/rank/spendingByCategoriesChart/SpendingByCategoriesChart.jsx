@@ -5,11 +5,14 @@ const CustomTick = (props) => {
     const {
         x, y, payload, link
     } = props;
+
+    const offsetY = payload.value.length < 37 ? -8 : -15;
+
     return (
         <g transform={`translate(${x},${y})`} >
             <a href={`${link[payload.index].link}`}>
-                <foreignObject x={-200} y={0} dy={0} textAnchor="end" fill="#666" width={200} height={40}>
-                    <div id="hellow" style={{ color: 'red', width: "200px" }}>{payload.value}</div>
+                <foreignObject x={-200} y={offsetY} dy={0} textAnchor="end" fill="#666" width={200} height={40}>
+                    <div className="hellow" >{payload.value}</div>
                 </foreignObject>
             </a>
         </g>);

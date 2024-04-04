@@ -46,7 +46,9 @@
         }
     }
 
-    #hellow {
-        background-color: blueviolet;
+    .hellow {
+        width: rem(200);
+        font-size: rem(12);
+        text-align: end;
     }
 }
