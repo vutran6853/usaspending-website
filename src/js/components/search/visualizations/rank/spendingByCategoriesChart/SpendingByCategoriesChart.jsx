@@ -8,9 +8,9 @@ const CustomTick = (props) => {
     return (
         <g transform={`translate(${x},${y})`} >
             <a href={`${link[payload.index].link}`}>
-                <text x={0} y={0} dy={0} textAnchor="end" fill="#666" fontSize={12} >
-                    {payload.value}
-                </text>
+                <foreignObject x={-200} y={0} dy={0} textAnchor="end" fill="#666" width={200} height={40}>
+                    <div style={{ color: 'red', width: "200px" }}>{payload.value}</div>
+                </foreignObject>
             </a>
         </g>);
 };
@@ -43,7 +43,12 @@ const SpendingByCategoriesChart = (props) => {
                     }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis type="number" />
-                    <YAxis type="category" dataKey="label" tick={<CustomTick link={dataStuff} />} fontSize="12px" link="link" />
+                    <YAxis
+                        type="category"
+                        dataKey="label"
+                        tick={<CustomTick link={dataStuff} />}
+                        fontSize="12px"
+                        link="link" />
                     {/* todo - tooltips in next ticket */}
                     {/* <Tooltip /> */}
                     <Bar dataKey="value" fill="#8884d8" activeBar={<Rectangle fill="gold" stroke="purple" />} />
