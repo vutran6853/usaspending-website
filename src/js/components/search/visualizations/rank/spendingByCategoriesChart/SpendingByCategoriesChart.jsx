@@ -9,7 +9,7 @@ const CustomTick = (props) => {
         <g transform={`translate(${x},${y})`} >
             <a href={`${link[payload.index].link}`}>
                 <foreignObject x={-200} y={0} dy={0} textAnchor="end" fill="#666" width={200} height={40}>
-                    <div style={{ color: 'red', width: "200px" }}>{payload.value}</div>
+                    <div id="hellow" style={{ color: 'red', width: "200px" }}>{payload.value}</div>
                 </foreignObject>
             </a>
         </g>);
