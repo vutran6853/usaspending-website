@@ -50,5 +50,10 @@
         width: rem(200);
         font-size: rem(12);
         text-align: end;
+
+        @media (max-width: $medium-screen) {
+            width: rem(100);
+            text-overflow: ellipsis;
+        }
     }
 }
