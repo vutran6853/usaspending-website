@@ -7,11 +7,12 @@ const CustomTick = (props) => {
     } = props;
 
     const offsetY = payload.value.length < 37 ? -8 : -15;
+    const screenSizeMd = window.innerWidth < 993;
 
     return (
         <g transform={`translate(${x},${y})`} >
             <a href={`${link[payload.index].link}`}>
-                <foreignObject x={-200} y={offsetY} dy={0} textAnchor="end" fill="#666" width={200} height={40}>
+                <foreignObject x={-200} y={screenSizeMd ? -8 : offsetY} dy={0} textAnchor="end" fill="#666" width={200} height={42}>
                     <div className="hellow" >{payload.value}</div>
                 </foreignObject>
             </a>

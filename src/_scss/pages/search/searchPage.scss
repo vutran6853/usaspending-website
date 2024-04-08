@@ -48,12 +48,14 @@
 
     .hellow {
         width: rem(200);
+        height: rem(42);
         font-size: rem(12);
-        text-align: end;
 
         @media (max-width: $medium-screen) {
-            width: rem(100);
+            //width: rem(100);
             text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         }
     }
 }
