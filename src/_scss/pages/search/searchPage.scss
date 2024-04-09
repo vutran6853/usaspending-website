@@ -51,21 +51,8 @@
         height: rem(42);
         font-size: rem(14);
         line-height: rem(21);
-
-        @media (max-width: $medium-screen) {
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            width: rem(130);
-
-            @supports (-webkit-line-clamp: 2) {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: initial;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-            }
-        }
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 }
