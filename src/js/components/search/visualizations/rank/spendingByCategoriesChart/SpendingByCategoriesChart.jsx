@@ -11,7 +11,7 @@ const CustomTick = (props) => {
     return (
         <g transform={`translate(${x},${y})`} >
             <a href={`${link[payload.index].link}`}>
-                <foreignObject x={screenSizeTb ? 7 : -230} y={screenSizeTb ? -25 : -10.5} dy={0} textAnchor="end" fill="#666" width={400} height={21}>
+                <foreignObject x={screenSizeTb ? 7 : -250} y={screenSizeTb ? -25 : -10.5} dy={0} textAnchor="end" fill="#666" width={400} height={21}>
                     <div className="hellow" >{payload.value}</div>
                 </foreignObject>
             </a>
@@ -37,7 +37,7 @@ const SpendingByCategoriesChart = (props) => {
                 <BarChart
                     data={dataStuff}
                     layout="vertical"
-                    barCategoryGap={10}
+                    barCategoryGap={12}
                     margin={{
                         top: 10,
                         right: 10,
