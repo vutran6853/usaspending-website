@@ -48,11 +48,16 @@
 
     .hellow {
         width: rem(230);
-        height: rem(42);
+        height: rem(21);
         font-size: rem(14);
         line-height: rem(21);
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+
+        @media (max-width: $tablet-screen) {
+            overflow: visible;
+            //width: fit-content;
+        }
     }
 }
