@@ -4,23 +4,16 @@ table {
     min-width: 100%;
 
     &.table-for-new-search-page {
-        margin-top: rem(16);
-        margin-bottom: 0;
+        margin: rem(16) 0;
 
         // this is necessary to make the usda-table__row class hover work correctly
         td {
             background-color: unset;
         }
 
-        //&.award-results-table-dtui {
-        //    tbody.usda-table__body {
-        //        .usda-table__row {
-        //            border-left: 0;
-        //            border-right: 0;
-        //            border-bottom: solid rem(1) $gray-cool-10;
-        //        }
-        //    }
-        //}
+        &.award-results-table-dtui {
+            margin-bottom: 0;
+        }
     }
 
     thead {
