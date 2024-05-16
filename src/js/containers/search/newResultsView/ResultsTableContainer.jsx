@@ -1,7 +1,7 @@
 /**
-  * ResultsTableContainer.jsx
-  * Created by Kevin Li 11/8/16
-  **/
+ * ResultsTableContainer.jsx
+ * Created by Kevin Li 11/8/16
+ **/
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -22,10 +22,11 @@ import {
 } from 'dataMapping/search/awardTableColumns';
 import { awardTableColumnTypes } from 'dataMapping/search/awardTableColumnTypes';
 import { measureTableHeader } from 'helpers/textMeasurement';
-import ResultsTableSection from 'components/search/table/ResultsTableSection';
+import ResultsTableSection from 'components/search/newResultsView/table/ResultsTableSection';
 import searchActions from 'redux/actions/searchActions';
 import * as appliedFilterActions from 'redux/actions/search/appliedFilterActions';
 import { setHasResults } from "../../../redux/actions/search/titleBarFilterActions";
+import SearchSectionWrapper from "../../../components/search/newResultsView/SearchSectionWrapper";
 
 const propTypes = {
     filters: PropTypes.object,
@@ -86,7 +87,7 @@ const ResultsTableContainer = (props) => {
         field: 'Award Amount',
         direction: 'desc'
     });
-    const [inFlight, setInFlight] = useState(true);
+    const [inFlight, setInFlight] = useState(false);
     const [error, setError] = useState(false);
     const [results, setResults] = useState([]);
     const [total, setTotal] = useState(0);
@@ -101,7 +102,7 @@ const ResultsTableContainer = (props) => {
             searchRequest.cancel();
         }
 
-        props.setAppliedFilterCompletion(false);
+        // props.setAppliedFilterCompletion(false);
         const tableTypeTemp = tableType;
 
         // get searchParams from state
@@ -387,7 +388,7 @@ const ResultsTableContainer = (props) => {
     };
 
     const loadNextPage = () => {
-    // check if request is already in-flight
+        // check if request is already in-flight
         if (inFlight) {
             // in-flight, ignore this request
             return;
@@ -447,6 +448,7 @@ const ResultsTableContainer = (props) => {
     }));
 
     useEffect(throttle(() => {
+        console.log("ResultsTableContainer useEffect initialRender");
         if (initialRender.current) {
             initialRender.current = false;
         }
@@ -459,6 +461,7 @@ const ResultsTableContainer = (props) => {
     }, 400), [tableType, sort]);
 
     useEffect(throttle(() => {
+        console.log("ResultsTableContainer useEffect updateFilters");
         if (initialRender.current === false) {
             if (props.subaward && !props.noApplied) {
                 // subaward toggle changed, update the search object
@@ -481,9 +484,10 @@ const ResultsTableContainer = (props) => {
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, 400), [props]);
+    }, 400), []);
 
     useEffect(throttle(() => {
+        console.log("ResultsTableContainer useEffect isLoadingNextPage");
         if (isLoadingNextPage) {
             performSearch();
             setLoadNextPage(false);
@@ -491,6 +495,7 @@ const ResultsTableContainer = (props) => {
     }, 400), [isLoadingNextPage]);
 
     useEffect(throttle(() => {
+        console.log("ResultsTableContainer useEffect loadColumns");
         loadColumns();
         if (SearchHelper.isSearchHashReady(location)) {
             pickDefaultTab();
@@ -499,6 +504,7 @@ const ResultsTableContainer = (props) => {
     }, 400), []);
 
     useEffect(throttle(() => {
+        console.log("ResultsTableContainer useEffect performSearch");
         performSearch();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, 400), [tableType, resultLimit, page]);
@@ -508,27 +514,33 @@ const ResultsTableContainer = (props) => {
     }
 
     return (
-        <ResultsTableSection
-            error={error}
-            inFlight={inFlight}
-            results={results}
-            columns={columns[tableType]}
-            sort={sort}
-            tableTypes={tabsWithCounts}
-            currentType={tableType}
-            tableInstance={tableInstance}
-            switchTab={switchTab}
-            updateSort={updateSort}
-            loadNextPage={loadNextPage}
-            subaward={props.subaward}
-            awardIdClick={awardIdClick}
-            subAwardIdClick={subAwardIdClick}
-            page={page}
-            setPage={setPage}
-            total={total}
-            resultsLimit={resultLimit}
-            setResultLimit={setResultLimit}
-            resultsCount={counts[tableType]} />
+        <SearchSectionWrapper
+            isError={error}
+            isLoading={inFlight}
+            noData={!inFlight && !error && results.length === 0}
+            {...props.wrapperProps}>
+            <ResultsTableSection
+                error={error}
+                inFlight={inFlight}
+                results={results}
+                columns={columns[tableType]}
+                sort={sort}
+                tableTypes={tabsWithCounts}
+                currentType={tableType}
+                tableInstance={tableInstance}
+                switchTab={switchTab}
+                updateSort={updateSort}
+                loadNextPage={loadNextPage}
+                subaward={props.subaward}
+                awardIdClick={awardIdClick}
+                subAwardIdClick={subAwardIdClick}
+                page={page}
+                setPage={setPage}
+                total={total}
+                resultsLimit={resultLimit}
+                setResultLimit={setResultLimit}
+                resultsCount={counts[tableType]} />
+        </SearchSectionWrapper>
     );
 };
 
