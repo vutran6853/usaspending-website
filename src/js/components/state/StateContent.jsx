@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import StateTimeVisualizationSectionContainer from 'containers/state/StateTimeVisualizationSectionContainer';
 import TopFiveSection from './topFive/TopFiveSection';
 import StateOverview from './overview/StateOverview';
-import StateFooter from './StateFooter';
 
 
 const propTypes = {
@@ -23,7 +22,6 @@ const StateContent = ({ stateProfile }) => (
             <StateTimeVisualizationSectionContainer
                 stateProfile={stateProfile.overview} />
             <TopFiveSection />
-            <StateFooter />
         </div>
     </div>
 );

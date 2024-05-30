@@ -20,6 +20,7 @@ import { stickyHeaderHeight } from 'dataMapping/stickyHeader/stickyHeader';
 import { getStickyBreakPointForSidebar } from 'helpers/stickyHeaderHelper';
 import { mediumScreen } from 'dataMapping/shared/mobileBreakpoints';
 import StateContent from './StateContent';
+import StateFooter from "./StateFooter";
 
 const propTypes = {
     loading: PropTypes.bool,
@@ -154,14 +155,17 @@ const StatePage = ({
             activeSection={activeSection}
             jumpToSection={jumpToSection}
             inPageNav>
-            <main id="main-content" className="main-content">
-                <Helmet>
-                    <link href="https://api.mapbox.com/mapbox-gl-js/v2.11.1/mapbox-gl.css" rel="stylesheet" />
-                </Helmet>
-                <LoadingWrapper isLoading={loading}>
-                    {content}
-                </LoadingWrapper>
-            </main>
+            <div>
+                <main id="main-content" className="main-content">
+                    <Helmet>
+                        <link href="https://api.mapbox.com/mapbox-gl-js/v2.11.1/mapbox-gl.css" rel="stylesheet" />
+                    </Helmet>
+                    <LoadingWrapper isLoading={loading}>
+                        {content}
+                    </LoadingWrapper>
+                </main>
+                <StateFooter />
+            </div>
         </PageWrapper>
     );
 };
