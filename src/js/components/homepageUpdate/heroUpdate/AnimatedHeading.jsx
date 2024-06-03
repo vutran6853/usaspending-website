@@ -198,7 +198,8 @@ const AnimatedHeading = ({ paused }) => {
     const rotatingText = () => (
         <div className="hero__headline">
             <h1 className="landing-phrase landing-phrase--entrance-animation">
-                <div>The official source <span style={{ whiteSpace: 'nowrap' }}>of government</span> <span style={{ whiteSpace: 'nowrap' }}>spending data</span></div>
+                {/* TODO: RETURN BACK TO NORMAL AFTER TESTING FOR SANDBOX */}
+                HELLO IN BIG LETTERS
             </h1>
             <div className="phrase">
                 <div className="phrase__intro">
