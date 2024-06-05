@@ -100,7 +100,6 @@ export class DownloadBottomBarContainer extends React.Component {
         let filterSet = {};
         if (filters) {
             const operation = new SearchAwardsOperation();
-            console.log('filters', filters);
             operation.fromState(filters);
 
             filterSet = operation.toParams();
