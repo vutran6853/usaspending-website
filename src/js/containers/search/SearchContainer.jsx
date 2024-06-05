@@ -68,6 +68,7 @@ export const parseRemoteFilters = (data) => {
     const events = convertFiltersToAnalyticEvents(reduxValues);
     sendFieldCombinations(events);
     sendAnalyticEvents(events);
+
     return reduxValues;
 };
 
@@ -85,6 +86,7 @@ const SearchContainer = ({ history }) => {
             _complete: areFiltersApplied
         }
     } = useSelector((state) => state);
+
     const [downloadAvailable, setDownloadAvailable] = useState(false);
     const [downloadInFlight, setDownloadInFlight] = useState(false);
     const [generateHashInFlight, setGenerateHashInFlight] = useState(false);
