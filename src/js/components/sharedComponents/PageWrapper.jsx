@@ -21,7 +21,7 @@ const PageWrapper = ({
     title,
     overLine,
     toolBarComponents = [],
-    filters = {},
+    appliedFilters = {},
     sections,
     activeSection,
     jumpToSection,
@@ -44,7 +44,7 @@ const PageWrapper = ({
         {React.cloneElement(children, {
             className: `usda-page__container${children.props.className ? ` ${children.props.className}` : ''}`
         })}
-        <Footer pageName={pageName} filters={filters} />
+        <Footer pageName={pageName} appliedFilters={appliedFilters} />
     </div>
 );
 
@@ -58,7 +58,8 @@ PageWrapper.propTypes = {
     children: PropTypes.element,
     ref: PropTypes.object,
     noHeader: PropTypes.bool,
-    filters: PropTypes.object,
+    // filters: PropTypes.object,
+    appliedFilters: PropTypes.object,
     sections: PropTypes.array,
     activeSection: PropTypes.string,
     jumpToSection: PropTypes.func

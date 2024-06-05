@@ -163,7 +163,7 @@ const SearchPage = ({
                     downloadInFlight={downloadInFlight}
                     onClick={showDownloadModal} />
             ]}
-            filters={appliedFilters}>
+            appliedFilters={appliedFilters}>
             <div id="main-content">
                 <FlexGridRow className="search-contents" >
                     <FlexGridCol className="full-search-sidebar" width={3}>

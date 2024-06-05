@@ -25,7 +25,7 @@ import StayInTouch from "../components/sharedComponents/StayInTouch";
 
 const propTypes = {
     pageName: PropTypes.string.isRequired,
-    filters: PropTypes.object,
+    appliedFilters: PropTypes.object,
     redirectUser: PropTypes.func
 };
 
@@ -39,7 +39,7 @@ const clickedFooterLink = (route) => {
 
 const Footer = ({
     pageName,
-    filters,
+    appliedFilters,
     redirectUser
 }) => {
     const [windowWidth, setWindowWidth] = useState(0);
@@ -69,7 +69,7 @@ const Footer = ({
     return (
         <footer>
             <DownloadBottomBarContainer
-                filters={filters} />
+                appliedFilters={appliedFilters} />
             <BulkDownloadBottomBarContainer />
             <StayInTouch pageName={pageName} />
             <div className="footer-container">

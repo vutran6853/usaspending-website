@@ -27,7 +27,7 @@ const propTypes = {
     setDownloadExpectedFile: PropTypes.func,
     setDownloadExpectedUrl: PropTypes.func,
     resetDownload: PropTypes.func,
-    filters: PropTypes.object
+    appliedFilters: PropTypes.object
 };
 
 export class DownloadBottomBarContainer extends React.Component {
@@ -57,7 +57,7 @@ export class DownloadBottomBarContainer extends React.Component {
     componentDidMount() {
         if (this.props.download?.pendingDownload && this.props.download?.showCollapsedProgress &&
             !this.state.visible) {
-            this.requestDownload(this.props.filters,
+            this.requestDownload(this.props.appliedFilters,
                 this.props.download.columns, this.props.download.type);
             this.displayBar();
         }
@@ -66,7 +66,7 @@ export class DownloadBottomBarContainer extends React.Component {
     componentDidUpdate() {
         if (this.props.download?.pendingDownload && this.props.download?.showCollapsedProgress &&
             !this.state.visible) {
-            this.requestDownload(this.props.filters,
+            this.requestDownload(this.props.appliedFilters,
                 this.props.download.columns, this.props.download.type);
             this.displayBar();
         }
@@ -100,6 +100,7 @@ export class DownloadBottomBarContainer extends React.Component {
         let filterSet = {};
         if (filters) {
             const operation = new SearchAwardsOperation();
+            console.log('filters', filters);
             operation.fromState(filters);
 
             filterSet = operation.toParams();
@@ -155,7 +156,8 @@ export class DownloadBottomBarContainer extends React.Component {
         if (this.props.download.expectedFile !== '') {
             expectedFile = this.props.download.expectedFile;
             downloadType = this.props.download.type;
-        } else if ((typeof this.state.expectedFile) === "object" && Object.prototype.hasOwnProperty.call(this.state.expectedFile, "file")) {
+        }
+        else if ((typeof this.state.expectedFile) === "object" && Object.prototype.hasOwnProperty.call(this.state.expectedFile, "file")) {
             expectedFile = this.state.expectedFile.file;
             downloadType = this.state.expectedFile.type;
         }
