@@ -104,6 +104,18 @@ const TimeVisualizationChart = (props) => {
         transformedData.pop();
     }
 
+    const getLargestNegativeValue = (data) => {
+        const negativesArray = [];
+        data.forEach((item) => {
+            if (item.value < 0) {
+                negativesArray.push(item.value);
+            }
+        });
+        return negativesArray.length ? negativesArray.reduce((a, b) => Math.max(Math.abs(a), Math.abs(b))) : 0;
+    };
+
+    const largestNegativeValue = getLargestNegativeValue(transformedData);
+
     const onMouseLeave = () => {
         if (focusBar) {
             setFocusBar(null);
@@ -165,7 +177,11 @@ const TimeVisualizationChart = (props) => {
                             bottom: 5
                         }}>
                         <XAxis dataKey="label" tick={<CustomXTick />} />
-                        <YAxis dataKey="value" tick={<CustomYTick />} tickLine={false} />
+                        <YAxis
+                            dataKey="value"
+                            tick={<CustomYTick />}
+                            tickLine={false}
+                            domain={largestNegativeValue ? [(largestNegativeValue * -1), 'auto'] : [0, 'auto']} />
                         <Tooltip cursor={{ fill: '#fff' }} filterNull content={<CustomTooltip />} isAnimationActive={false} />
                         <ReferenceLine y={0} stroke="#dfe1e2" />
                         <Bar dataKey="value" shape={<CustomShape focusBar={focusBar} />} activeBar={<CustomShape isActive focusBar={focusBar} />} onMouseEnter={onMouseMove} onMouseOut={onMouseLeave} onMouseLeave={onMouseLeave} />
