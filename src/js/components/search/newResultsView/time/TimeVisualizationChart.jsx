@@ -20,6 +20,7 @@ const timeJumpIcon = (x, y) => {
 };
 
 const CustomShape = (props) => {
+    console.log('CustomShape props', props);
     const {
         x, y, width, height, focusBar, label
     } = props;
@@ -43,6 +44,7 @@ const CustomShape = (props) => {
     }
     return (
         <rect x={translateX} y={height < 0 ? y - Math.abs(height) : y} width={maxWidth} height={Math.abs(height)} fill={fill} fillOpacity={fillOpacity} className="recharts-bars" />
+        // <rect x={translateX} y={y} width={maxWidth} height={Math.abs(height)} fill={fill} fillOpacity={fillOpacity} className="recharts-bars" />
     );
 };
 
@@ -105,12 +107,14 @@ const TimeVisualizationChart = (props) => {
     }
 
     const getLargestNegativeValue = (data) => {
+        // console.log('data', data);
         const negativesArray = [];
         data.forEach((item) => {
             if (item.value < 0) {
                 negativesArray.push(item.value);
             }
         });
+        // console.log('negativesArray.length ? negativesArray.reduce((a, b) => Math.max(Math.abs(a), Math.abs(b))) : 0', negativesArray.length ? negativesArray.reduce((a, b) => Math.max(Math.abs(a), Math.abs(b))) : 0);
         return negativesArray.length ? negativesArray.reduce((a, b) => Math.max(Math.abs(a), Math.abs(b))) : 0;
     };
 
@@ -171,6 +175,7 @@ const TimeVisualizationChart = (props) => {
                         height={350}
                         data={transformedData}
                         accessibilityLayer
+                        // stackOffset="sign"
                         margin={{
                             top: 5,
                             right: 30,
@@ -180,8 +185,8 @@ const TimeVisualizationChart = (props) => {
                         <YAxis
                             dataKey="value"
                             tick={<CustomYTick />}
-                            tickLine={false}
-                            domain={largestNegativeValue ? [(largestNegativeValue * -1), 'auto'] : [0, 'auto']} />
+                            tickLine={false} />
+                        {/* domain={largestNegativeValue ? [(largestNegativeValue * -1), 'auto'] : [0, 'auto']} /> */}
                         <Tooltip cursor={{ fill: '#fff' }} filterNull content={<CustomTooltip />} isAnimationActive={false} />
                         <ReferenceLine y={0} stroke="#dfe1e2" />
                         <Bar dataKey="value" shape={<CustomShape focusBar={focusBar} />} activeBar={<CustomShape isActive focusBar={focusBar} />} onMouseEnter={onMouseMove} onMouseOut={onMouseLeave} onMouseLeave={onMouseLeave} />
