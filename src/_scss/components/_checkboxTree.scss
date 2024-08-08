@@ -146,6 +146,10 @@
         padding-left: rem(12);
         margin-left: rem(4);
         border-left: 3px solid $color-gray-lighter;
+        margin-top: -48px;
+        li:first-of-type {
+          padding-top: 48px;
+        }
         .rct-node { // first dropdown
           padding-bottom: 0;
           .rct-text {
