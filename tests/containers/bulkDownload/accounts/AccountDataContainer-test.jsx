@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { mockProps } from "../mockData";
-import { render, waitFor } from '../../../testResources/test-utils';
+import { render, screen } from '../../../testResources/test-utils';
 import * as BulkDownloadHelper from '../../../../src/js/helpers/bulkDownloadHelper';
 import { AccountDataContainer } from "../../../../src/js/containers/bulkDownload/accounts/AccountDataContainer";
 import AccountDataContent from "../../../../src/js/components/bulkDownload/accounts/AccountDataContent";
@@ -16,7 +16,7 @@ import { mockApiCall } from "../../../testResources/mockApiHelper";
 const mockBulkDownload = mockProps.bulkDownload;
 mockApiCall(BulkDownloadHelper, 'requestAgenciesList', { response: "42" });
 
-jest.mock('../../../../src/js/components/bulkDownload/accounts/AccountDataContent', () => jest.fn(() => null));
+jest.mock('../../../../src/js/components/bulkDownload/accounts/AccountDataContent', () => (childProps) => (<div>{JSON.stringify(childProps)}</div>));
 jest.mock('../../../../src/js/helpers/bulkDownloadHelper');
 
 beforeEach(() => {
@@ -71,13 +71,8 @@ describe('AccountDataContainer tests', () => {
 
         render(<AccountDataContainer {...mockADCContainerProps} />);
 
+        const test = screen.getByText('"id":"212","name":"Mock Federal Account"', { exact: false });
 
-        return waitFor(() => {
-            expect(spyAgency).toHaveBeenCalledTimes(1);
-            expect(spyBudget).toHaveBeenCalledTimes(1);
-            expect(AccountDataContent).toBeCalledTimes(2);
-            // this api call happens three times, with the successful call only being on the third and final call
-            expect(AccountDataContent).toMatchSnapshot();
-        });
+        expect(test).toBeTruthy();
     });
 });

@@ -3,7 +3,7 @@
  * Created by Lizzie Salita 4/23/18
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -21,196 +21,170 @@ const propTypes = {
     setDefCodes: PropTypes.func
 };
 
-export class AccountDataContainer extends React.Component {
-    constructor(props) {
-        super(props);
+const AccountDataContainer = (props) => {
+    const [agencies, setAgencies] = useState({
+        cfoAgencies: [],
+        otherAgencies: []
+    });
+    const [federalAccounts, setFederalAccounts] = useState([]);
+    const [budgetFunctions, setBudgetFunctions] = useState([]);
+    const [budgetSubfunctions, setBudgetSubfunctions] = useState([]);
 
-        this.state = {
-            agencies: {
-                cfoAgencies: [],
-                otherAgencies: []
-            },
-            federalAccounts: [],
-            budgetFunctions: [],
-            budgetSubfunctions: []
-        };
+    let agencyListRequest = null;
+    let federalAccountListRequest = null;
+    let budgetFunctionListRequest = null;
+    let budgetSubfunctionListRequest = null;
 
-        this.agencyListRequest = null;
-        this.federalAccountListRequest = null;
-
-        this.budgetFunctionListRequest = null;
-        this.budgetSubfunctionListRequest = null;
-
-        this.updateFilter = this.updateFilter.bind(this);
-        this.clearAccountFilters = this.clearAccountFilters.bind(this);
-        this.setAgencyList = this.setAgencyList.bind(this);
-        this.setFederalAccountList = this.setFederalAccountList.bind(this);
-        this.setBudgetFunctionList = this.setBudgetFunctionList.bind(this);
-        this.setBudgetSubfunctionList = this.setBudgetSubfunctionList.bind(this);
-    }
-
-    componentDidMount() {
-        this.setAgencyList();
-        this.setBudgetFunctionList();
-    }
-
-    setAgencyList() {
-        if (this.agencyListRequest) {
-            this.agencyListRequest.cancel();
-        }
-
-        // perform the API request
-        this.agencyListRequest = BulkDownloadHelper.requestAgenciesList({
-            type: "account_agencies",
-            agency: 0
-        });
-
-        this.agencyListRequest.promise
-            .then((res) => {
-                const cfoAgencies = res.data.agencies.cfo_agencies;
-                const otherAgencies = res.data.agencies.other_agencies;
-                this.setState({
-                    agencies: {
-                        cfoAgencies,
-                        otherAgencies
-                    }
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-                this.agencyListRequest = null;
-            });
-    }
-
-    async setFederalAccountList(agencyCode, page = 1) {
-        if (agencyCode !== '') {
-            if (this.federalAccountListRequest) {
-                this.federalAccountListRequest.cancel();
-            }
-
-            this.federalAccountListRequest = BulkDownloadHelper.requestFederalAccountList(agencyCode, page);
-            try {
-                const { data } = await this.federalAccountListRequest.promise;
-                this.setState({
-                    federalAccounts: page > 1
-                    // we're requesting the second page, concat array
-                        ? [...this.state.federalAccounts, ...data.results]
-                        : data.results
-                });
-                if (data.hasNext) {
-                    this.setFederalAccountList(agencyCode, page + 1);
-                }
-            }
-            catch (e) {
-                console.log(e);
-                this.federalAccountListRequest = null;
-            }
-        }
-        else {
-            this.setState({
-                federalAccounts: []
-            }, () => {
-                this.resetFederalAccount();
-            });
-        }
-    }
-
-    setBudgetFunctionList() {
-        if (this.budgetFunctionListRequest) {
-            this.budgetFunctionListRequest.cancel();
-        }
-
-        // perform the API request
-        this.budgetFunctionListRequest = BulkDownloadHelper.requestBudgetFunctionList();
-
-        this.budgetFunctionListRequest.promise
-            .then((res) => {
-                const budgetFunctions = res.data.results;
-                this.setState({
-                    budgetFunctions
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-                this.budgetFunctionListRequest = null;
-            });
-    }
-
-    setBudgetSubfunctionList(budgetFunction) {
-        if (budgetFunction !== '') {
-            if (this.budgetSubfunctionListRequest) {
-                this.budgetSubfunctionListRequest.cancel();
-            }
-
-            this.budgetSubfunctionListRequest = BulkDownloadHelper.requestBudgetSubfunctionList({
-                budget_function: budgetFunction
-            });
-
-            this.budgetSubfunctionListRequest.promise
-                .then((res) => {
-                    const budgetSubfunctions = res.data.results;
-                    this.setState({
-                        budgetSubfunctions
-                    });
-                })
-                .catch((err) => {
-                    console.log(err);
-                    this.budgetSubfunctionListRequest = null;
-                });
-        }
-        else {
-            this.setState({
-                budgetSubfunctions: []
-            }, () => {
-                this.resetBudgetSubfunction();
-            });
-        }
-    }
-
-    updateFilter(name, value) {
-        this.props.updateDownloadFilter({
+    const updateFilter = (name, value) => {
+        props.updateDownloadFilter({
             dataType: 'accounts',
             name,
             value
         });
-    }
+    };
 
-    resetFederalAccount() {
-        this.updateFilter('federalAccount', {
+    const resetFederalAccount = () => {
+        updateFilter('federalAccount', {
             id: '',
             name: 'Select a Federal Account'
         });
-    }
+    };
 
+    const setFederalAccountList = async (agencyCode, page = 1) => {
+        if (agencyCode !== '') {
+            if (federalAccountListRequest) {
+                federalAccountListRequest.cancel();
+            }
 
-    clearAccountFilters() {
-        this.props.clearDownloadFilters('accounts');
-    }
+            federalAccountListRequest = BulkDownloadHelper.requestFederalAccountList(agencyCode, page);
+            try {
+                const { data } = await federalAccountListRequest.promise;
+                setFederalAccounts(
+                    page > 1
+                        // we're requesting the second page, concat array
+                        ? [...federalAccounts, ...data.results]
+                        : data.results
+                );
 
-    resetBudgetSubfunction() {
-        this.updateFilter('budgetSubfunction', {
+                if (data.hasNext) {
+                    setFederalAccountList(agencyCode, page + 1);
+                }
+            }
+            catch (e) {
+                console.log(e);
+                federalAccountListRequest = null;
+            }
+        }
+        else {
+            setFederalAccounts([]);
+            resetFederalAccount();
+        }
+    };
+
+    const setBudgetFunctionList = () => {
+        if (budgetFunctionListRequest) {
+            budgetFunctionListRequest.cancel();
+        }
+
+        // perform the API request
+        budgetFunctionListRequest = BulkDownloadHelper.requestBudgetFunctionList();
+
+        budgetFunctionListRequest.promise
+            .then((res) => {
+                const budgetFunctionsResults = res.data.results;
+                setBudgetFunctions(budgetFunctionsResults);
+            })
+            .catch((err) => {
+                console.log(err);
+                budgetFunctionListRequest = null;
+            });
+    };
+
+    const resetBudgetSubfunction = () => {
+        updateFilter('budgetSubfunction', {
             code: '',
             title: 'Select a Budget Sub-Function'
         });
-    }
+    };
 
-    render() {
-        return (
-            <AccountDataContent
-                setDefCodes={this.props.setDefCodes}
-                accounts={this.props.bulkDownload.accounts}
-                federalAccounts={this.state.federalAccounts}
-                setFederalAccountList={this.setFederalAccountList}
-                updateFilter={this.updateFilter}
-                clearAccountFilters={this.clearAccountFilters}
-                agencies={this.state.agencies}
-                budgetFunctions={this.state.budgetFunctions}
-                budgetSubfunctions={this.state.budgetSubfunctions}
-                setBudgetSubfunctionList={this.setBudgetSubfunctionList}
-                clickedDownload={this.props.clickedDownload} />
-        );
-    }
-}
+    const setBudgetSubfunctionList = (budgetFunction) => {
+        if (budgetFunction !== '') {
+            if (budgetSubfunctionListRequest) {
+                budgetSubfunctionListRequest.cancel();
+            }
+
+            budgetSubfunctionListRequest = BulkDownloadHelper.requestBudgetSubfunctionList({
+                budget_function: budgetFunction
+            });
+
+            budgetSubfunctionListRequest.promise
+                .then((res) => {
+                    const budgetSubfunctionsResults = res.data.results;
+                    setBudgetSubfunctions(budgetSubfunctionsResults);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    budgetSubfunctionListRequest = null;
+                });
+        }
+        else {
+            setBudgetSubfunctions([]);
+            resetBudgetSubfunction();
+        }
+    };
+
+    const clearAccountFilters = () => {
+        props.clearDownloadFilters('accounts');
+    };
+
+    const setAgencyList = () => {
+        if (agencyListRequest) {
+            agencyListRequest.cancel();
+        }
+
+        // perform the API request
+        agencyListRequest = BulkDownloadHelper.requestAgenciesList({
+            type: "account_agencies",
+            agency: 0
+        });
+
+        agencyListRequest.promise
+            .then((res) => {
+                const cfoAgencies = res.data.agencies.cfo_agencies;
+                const otherAgencies = res.data.agencies.other_agencies;
+                setAgencies({
+                    cfoAgencies,
+                    otherAgencies
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+                agencyListRequest = null;
+            });
+    };
+
+    useEffect(() => {
+        setAgencyList();
+        setBudgetFunctionList();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    return (
+        <AccountDataContent
+            setDefCodes={props.setDefCodes}
+            accounts={props.bulkDownload.accounts}
+            federalAccounts={federalAccounts}
+            setFederalAccountList={setFederalAccountList}
+            updateFilter={updateFilter}
+            clearAccountFilters={clearAccountFilters}
+            agencies={agencies}
+            budgetFunctions={budgetFunctions}
+            budgetSubfunctions={budgetSubfunctions}
+            setBudgetSubfunctionList={setBudgetSubfunctionList}
+            clickedDownload={props.clickedDownload} />
+    );
+};
 
 AccountDataContainer.propTypes = propTypes;
 
