@@ -33,6 +33,8 @@ const AwardTypeTooltip = (props) => {
     let pointerDivRef = useRef();
     let containerDivRef = useRef();
 
+    console.log('test');
+
     const positionTooltip = useCallback(() => {
         // Tooptip sizes
         const tooltipWidth = divRef.offsetWidth;
