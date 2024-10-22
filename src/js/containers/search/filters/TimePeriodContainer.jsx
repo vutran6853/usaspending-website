@@ -49,7 +49,8 @@ export class TimePeriodContainer extends React.Component {
     componentDidMount() {
         if (this.props.appliedFilters.timePeriodType === 'fy') {
             this.changeTab('fy');
-        } else {
+        }
+        else {
             this.changeTab('dr');
         }
         this.generateTimePeriods();
@@ -92,7 +93,7 @@ export class TimePeriodContainer extends React.Component {
         const newFilters = Object.assign({}, params);
 
         if (this.state.activeTab === 'fy') {
-            newFilters.dateType = 'fy';
+            newFilters.dateType = newFilters.fy.size ? 'fy' : 'dr';
             // reset the date range values
             newFilters.startDate = null;
             newFilters.endDate = null;

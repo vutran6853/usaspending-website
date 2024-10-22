@@ -281,6 +281,7 @@ export default class TimePeriod extends React.Component {
         if (this.props.disableDateRange) {
             activeClassDR = 'hidden';
         }
+
         const newAwardsFilter = (
             <div className={`new-awards-wrapper ${activeClassDR}`}>
                 <label
