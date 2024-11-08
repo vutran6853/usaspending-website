@@ -97,6 +97,7 @@ export class TASCheckboxTree extends React.Component {
             countsFromHash
         } = this.props;
         if (this.props.nodes.length !== 0 && checkedFromHash.length) {
+            console.debug("checked from hash: ", checkedFromHash);
             this.setCheckedStateFromUrlHash(checkedFromHash.map((ancestryPath) => ancestryPath.pop()));
             this.props.setTasCounts(countsFromHash);
             this.props.stageTas(
@@ -372,6 +373,7 @@ export class TASCheckboxTree extends React.Component {
         const {
             nodes,
             checked,
+            checkedFromHash,
             expanded,
             counts,
             searchExpanded
@@ -384,6 +386,7 @@ export class TASCheckboxTree extends React.Component {
             isSearch,
             showNoResults
         } = this.state;
+        console.debug("tas checkbox tree container: ", this.state, this.props);
         return (
             <div className="tas-checkbox">
                 <span className="checkbox-header">
@@ -407,6 +410,7 @@ export class TASCheckboxTree extends React.Component {
                     isLoading={isLoading}
                     data={nodes.sort((a, b) => a.label.localeCompare(b.label))}
                     checked={checked}
+                    checkedFromHash={checkedFromHash}
                     searchText={searchString}
                     countLabel="TAS"
                     noResults={showNoResults}

@@ -222,6 +222,7 @@ export default class CheckboxTree extends Component {
             isDisabled
         } = this.props;
         const labeledNodes = this.createLabels(data);
+        console.debug("checkbox tree props: ", this.props);
         if (isLoading) {
             return (
                 <div className="checkbox-tree-filter-message-container">

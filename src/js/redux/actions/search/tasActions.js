@@ -16,7 +16,10 @@ export const setTasNodes = (key, nodes) => setNodes(key, nodes, treeName, cleanT
 export const showTasTree = () => showTree(treeName);
 export const setExpandedTas = (expanded, type = 'SET_EXPANDED') => setExpanded(expanded, type, treeName);
 export const addCheckedTas = (nodeValue) => addChecked(nodeValue, treeName);
-export const setCheckedTas = (nodes) => setChecked(nodes, treeName);
+export const setCheckedTas = (nodes) => {
+    console.debug("nodes, treename: ", nodes, treeName);
+    return setChecked(nodes, treeName);
+};
 export const setUncheckedTas = (nodes) => setUnchecked(nodes, treeName);
 export const setSearchedTas = (nodes) => setSearchedNodes(nodes, treeName, cleanTasData);
 export const setTasCounts = (newCounts) => setCounts(newCounts, treeName);

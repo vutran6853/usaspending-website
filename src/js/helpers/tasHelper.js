@@ -57,8 +57,8 @@ export const getHighestTasAncestorCode = (node) => {
 };
 
 export const getImmediateTasAncestorCode = (node) => {
-    if (!node.ancestors.length || node.ancestors.length === 1) return getHighestTasAncestorCode(node);
-    return node.ancestors[node.ancestors.length - 1];
+    if (!node.ancestors?.length || node.ancestors?.length === 1) return getHighestTasAncestorCode(node);
+    return node.ancestors[node.ancestors?.length - 1];
 };
 
 export const removeStagedTasFilter = (

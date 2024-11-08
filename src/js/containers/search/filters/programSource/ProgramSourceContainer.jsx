@@ -30,6 +30,7 @@ export class ProgramSourceContainer extends React.Component {
     }
 
     render() {
+        console.debug("program source container props: ", this.props);
         return (
             <ProgramSourceSection
                 {...this.props}
